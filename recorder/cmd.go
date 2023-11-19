@@ -45,7 +45,6 @@ func (rc *RecordedCmd) Run() (*Recording, error) {
 	rc.cmd.Stdin = rc.Stdin
 
 	err := rc.cmd.Run()
-
 	if err != nil {
 		_, isExitError := err.(*exec.ExitError)
 
@@ -82,9 +81,12 @@ func (rc *RecordedCmd) onEvent(stream Stream, in []byte) {
 		return
 	}
 
+	data := make([]byte, len(in))
+	copy(data, in)
+
 	rc.recordEvent(StreamWriteEvent{
 		Stream: stream,
-		Data:   in,
+		Data:   data,
 	})
 }
 
